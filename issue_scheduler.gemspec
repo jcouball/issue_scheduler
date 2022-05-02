@@ -38,7 +38,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler-audit', '~> 0.9'
   spec.add_development_dependency 'github_pages_rake_tasks', '~> 0.1'
   spec.add_development_dependency 'rake', '~> 13.0'
-
   spec.add_development_dependency 'redcarpet', '~> 3.5'
   spec.add_development_dependency 'rspec', '~> 3.11'
   spec.add_development_dependency 'rubocop', '~> 1.28'

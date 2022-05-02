@@ -35,7 +35,7 @@ Add config in the following format to ~/.issue_scheduler.yaml:
 ```text
 username: your_username
 password: Qwerty13456!
-site: https://jira.ouryahoo.com/
+site: https://jira.mydomain.com/
 context_path: ""
 auth_type: :basic
 issue_templates: ~/issue_templates/**/*.yaml
@@ -45,7 +45,8 @@ Place issue templates in the issue_templates subdirectory. Each teamplate is a y
 file in the following format:
 
 ```text
-project: WARPDRIVE
+project: JIRAPROJECT
+component: Internal
 type: Story
 summary: Take out the trash
 description: |
