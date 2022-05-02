@@ -30,7 +30,7 @@ $
 
 ## Usage
 
-Add config in the following format to ~/.issue_scheduler.yml:
+Add config in the following format to ~/.issue_scheduler.yaml:
 
 ```text
 username: your_username

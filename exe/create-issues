@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2021 Verizon
+# frozen_string_literal: true
+
+require 'issue_scheduler'

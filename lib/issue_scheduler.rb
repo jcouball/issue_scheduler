@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'issue_scheduler/config'
 require_relative 'issue_scheduler/version'
 
-module IssueScheduler
-  class Error < StandardError; end
-  # Your code goes here...
-end
+# A module to encapsulate the Issue Scheduler functionality
+# @api puiblic
+module IssueScheduler; end
