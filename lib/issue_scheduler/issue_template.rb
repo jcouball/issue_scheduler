@@ -12,6 +12,7 @@ module IssueScheduler
     #
     # @example
     #   template_yaml = <<~YAML
+    #     template_name: Take out the trash
     #     recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
     #     project: 'MYPROJECT'
     #     component: 'Internal'
@@ -41,12 +42,15 @@ module IssueScheduler
     end
 
     # Attributes in this array must be given in the YAML template
-    REQUIRED_ATTRIBUTES = %i[recurrance_rule project summary].freeze
+    REQUIRED_ATTRIBUTES = %i[template_name recurrance_rule project summary].freeze
 
     # Defines the attributes for this object
     #
     # A getter method is created for each key in this HASH
     ATTRIBUTES = {
+      template_name: {
+        validation: ->(v) { v.is_a?(String) && !v.empty? }
+      },
       recurrance_rule: {
         validation:
           lambda do |v|

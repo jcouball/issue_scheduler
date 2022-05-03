@@ -5,6 +5,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
     subject { described_class.new(template_yaml) }
     context 'with a valid template that specifies all values' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR
         project: MYPROJECT
         component: Internal
@@ -20,6 +21,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
       let(:expected_attributes) do
         {
+          template_name: 'Take out the trash',
           recurrance_rule: RRule::Rule,
           project: 'MYPROJECT',
           component: 'Internal',
@@ -37,6 +39,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
       # component, description, type, and due_date are optional
 
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: 'MYPROJECT'
         summary: 'Take out the trash'
@@ -44,6 +47,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
       let(:expected_attributes) do
         {
+          template_name: 'Take out the trash',
           recurrance_rule: RRule::Rule,
           project: 'MYPROJECT',
           component: nil,
@@ -56,8 +60,47 @@ RSpec.describe IssueScheduler::IssueTemplate do
       it { is_expected.to have_attributes(**expected_attributes) }
     end
 
+    context 'when template_name is not given' do
+      let(:template_yaml) { <<~YAML }
+        recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
+        project: MYPROJECT
+        summary: 'Take out the trash'
+      YAML
+
+      it 'should raise a RuntimeError' do
+        expect { subject }.to raise_error(RuntimeError, /Missing issue template keys: \[:template_name\]/)
+      end
+    end
+
+    context 'when template_name is not a string' do
+      let(:template_yaml) { <<~YAML }
+        template_name: 123
+        recurrance_rule: RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+        project: MYPROJECT
+        summary: Take out the trash
+      YAML
+
+      it 'should raise a RuntimeError' do
+        expect { subject }.to raise_error(RuntimeError, /Invalid value for template_name/)
+      end
+    end
+
+    context 'when template_name is an empty string' do
+      let(:template_yaml) { <<~YAML }
+        template_name: ""
+        recurrance_rule: RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+        project: MYPROJECT
+        summary: Take out the trash
+      YAML
+
+      it 'should raise a RuntimeError' do
+        expect { subject }.to raise_error(RuntimeError, /Invalid value for template_name/)
+      end
+    end
+
     context 'when recurrence_rule is not given' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         project: 'MYPROJECT'
         summary: 'Take out the trash'
       YAML
@@ -69,6 +112,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when recurrence_rule is not a string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 1
         project: 'MYPROJECT'
         summary: 'Take out the trash'
@@ -81,6 +125,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when recurrence_rule is an empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: ""
         project: 'MYPROJECT'
         summary: 'Take out the trash'
@@ -93,6 +138,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when recurrence_rule is not a valid RRULE' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: "asdfasdf"
         project: 'MYPROJECT'
         summary: 'Take out the trash'
@@ -107,6 +153,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
       # component, description, type, and due_date are optional
 
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         summary: 'Take out the trash'
       YAML
@@ -120,6 +167,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
       # component, description, type, and due_date are optional
 
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: 1
         summary: 'Take out the trash'
@@ -132,6 +180,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when project is an empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: ""
         summary: 'Take out the trash'
@@ -144,6 +193,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when project is a lowercase string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: myproject
         summary: 'Take out the trash'
@@ -156,6 +206,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when component is am empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         component: ""
@@ -169,6 +220,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when summary is not given' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
       YAML
@@ -180,6 +232,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when summary is not a string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 1
@@ -192,6 +245,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when summary is an empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: ""
@@ -204,6 +258,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when description is an empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 'Take out the trash'
@@ -217,6 +272,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when type is an empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 'Take out the trash'
@@ -230,6 +286,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when due_date is not a string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 'Take out the trash'
@@ -243,6 +300,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when due_date is an empty string' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 'Take out the trash'
@@ -256,6 +314,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when due_date is not a valid date' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 'Take out the trash'
@@ -269,6 +328,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
     context 'when due_date is a is a Date' do
       let(:template_yaml) { <<~YAML }
+        template_name: Take out the trash
         recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'
         project: MYPROJECT
         summary: 'Take out the trash'
