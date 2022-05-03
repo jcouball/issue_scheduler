@@ -45,6 +45,7 @@ Place issue templates in the issue_templates subdirectory. Each teamplate is a y
 file in the following format:
 
 ```text
+recurrance_rule: 'RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR'
 project: JIRAPROJECT
 component: Internal
 type: Story
