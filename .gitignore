@@ -14,3 +14,4 @@
 /rubocop-report.json
 /.yarddoc
 /doc
+Gemfile.lock
