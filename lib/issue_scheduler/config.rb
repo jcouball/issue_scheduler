@@ -104,18 +104,18 @@ module IssueScheduler
     #   config_yaml = <<~CONFIG
     #     {
     #       username: user, password: pass, site: https://jira.mydomain.com, auth_type: basic,
-    #       issue_files: 'config/**/*.yaml'
+    #       issue_templates: 'config/**/*.yaml'
     #     }
     #   CONFIG
     #   config = IssueScheduler::Config.new(config_yaml)
-    #   config.issue_files #=> 'config/**/*.yaml'
+    #   config.issue_templates #=> 'config/**/*.yaml'
     #
     # @return [String] the glob pattern
     #
     # @see https://ruby-doc.org/core-3.1.2/Dir.html#method-c-glob Dir.glob
     #
-    def issue_files
-      config[:issue_files]
+    def issue_templates
+      config[:issue_templates]
     end
 
     # The config in the form of a Hash
@@ -127,7 +127,7 @@ module IssueScheduler
     #     site: https://jira.example.com
     #     context_path: ''
     #     auth_type: basic
-    #     issue_files: '~/scheduled_issues/**/*.yaml'
+    #     issue_templates: '~/scheduled_issues/**/*.yaml'
     #   YAML
     #   config.to_h #=> { 'username' => 'jcouball', 'password' => 'my_password', ... }
     #
@@ -146,7 +146,7 @@ module IssueScheduler
     #     site: https://jira.example.com
     #     context_path: ''
     #     auth_type: basic
-    #     issue_files: '~/scheduled_issues/**/*.yaml'
+    #     issue_templates: '~/scheduled_issues/**/*.yaml'
     #   YAML
     #   config.to_jira_options #=> {
     #     username: 'jcouball',
@@ -221,7 +221,7 @@ module IssueScheduler
       site: nil,
       context_path: '',
       auth_type: 'basic',
-      issue_files: '~/.issue_scheduler/issue_files'
+      issue_templates: '~/.issue_scheduler/issue_templates'
     }.freeze
   end
 end

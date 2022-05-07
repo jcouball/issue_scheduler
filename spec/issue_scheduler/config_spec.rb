@@ -7,7 +7,7 @@ RSpec.describe IssueScheduler::Config do
     site: test_site
     context_path: test_context_path
     auth_type: test_auth_type
-    issue_files: test_issue_files
+    issue_templates: test_issue_templates
   YAML
 
   let(:expected_config) do
@@ -17,7 +17,7 @@ RSpec.describe IssueScheduler::Config do
       site: 'test_site',
       context_path: 'test_context_path',
       auth_type: 'test_auth_type',
-      issue_files: 'test_issue_files'
+      issue_templates: 'test_issue_templates'
     }
   end
 
