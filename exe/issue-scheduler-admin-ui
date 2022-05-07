@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'issue_scheduler'
+
+rackup_file = File.join(IssueScheduler.lib_dir, 'admin_ui.ru')
+
+system('rackup', rackup_file)
