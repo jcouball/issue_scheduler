@@ -32,8 +32,9 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'active_model_persistence', '~> 0.5.0'
   spec.add_dependency 'jira-ruby', '~> 2.2'
-  spec.add_dependency 'rrule', '~> 0.5'
+  spec.add_dependency 'sidekiq-cron', '~> 1.4'
 
   spec.add_development_dependency 'bump', '~> 0.10'
   spec.add_development_dependency 'bundler-audit', '~> 0.9'
