@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'issue_scheduler'
+
+sidekiq_file = File.join(IssueScheduler.lib_dir, 'server.rb')
+
+system('sidekiq', '-r', sidekiq_file)
