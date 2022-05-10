@@ -28,10 +28,16 @@ Sidekiq.configure_server do |config|
 end
 
 # My worker class that creates issues
+# @api private
 class IssueWorker
   include Sidekiq::Worker
 
-  def perform(*args)
-    puts "**** IssueWorker#perform called with #{args.inspect}"
+  # Create an issue with the given template name
+  # @param template_name [String] the name of the template to use
+  # @param time [Time] the time to use for the issue
+  # @return [void]
+  # @api private
+  def perform(template_name, time)
+    puts "**** IssueWorker#perform called with #{template_name.pretty_inspect}, #{time.pretty_inspect}"
   end
 end
