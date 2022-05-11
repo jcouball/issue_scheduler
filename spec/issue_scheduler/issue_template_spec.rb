@@ -113,7 +113,7 @@ RSpec.describe IssueScheduler::IssueTemplate do
 
       context 'when finding a template with name weekly_status_report' do
         it { is_expected.to be_a(IssueScheduler::IssueTemplate) }
-        it { is_expected.to have_attributes(name:) }
+        it { is_expected.to have_attributes(name: name) }
       end
     end
   end

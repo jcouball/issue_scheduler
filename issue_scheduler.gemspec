@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = 'Schedule recurring Jira issue creation'
   spec.description = 'Allow Jira issues to be created at a specified recurrence'
   spec.homepage = 'https://github.com/jcouball/issue_scheduler'
-  spec.required_ruby_version = '>= 3.1.0'
+  spec.required_ruby_version = '>= 2.7.0'
   spec.license = 'MIT'
 
   spec.metadata['allowed_push_host'] = 'rubygems.org'
