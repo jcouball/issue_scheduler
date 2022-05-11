@@ -8,6 +8,8 @@ AllCops:
   # RuboCop enforces rules depending on the oldest version of Ruby which
   # your project supports:
   TargetRubyVersion: 2.7
+  Exclude:
+    - bin/create-release
 
 # The default max line length is 80 characters
 Layout/LineLength:
