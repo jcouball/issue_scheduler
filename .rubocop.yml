@@ -10,6 +10,7 @@ AllCops:
   TargetRubyVersion: 2.7
   Exclude:
     - bin/create-release
+    - vendor/bundle/**/*
 
 # The default max line length is 80 characters
 Layout/LineLength:
