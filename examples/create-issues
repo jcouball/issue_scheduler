@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2021 Verizon
+# frozen_string_literal: true
+
+require 'issue_scheduler'
+require 'pp'
+
+config = IssueScheduler::Config.new(IssueScheduler.load_yaml('config/config.yaml'))
+config.load_issue_templates
+
+pp IssueScheduler::IssueTemplate.all.first
+
+client = JIRA::Client.new(config.to_jira_options)
+
+project = client.Project.find('WARPDRIVE')
+component = project.components.find { |c| c.name == 'Internal' }
+
+puts "Project: '#{project.id}: #{project.name}'"
+
+# puts project.issuetypes.map(&:name)
+# exit
+
+puts "Component: '#{component.id}: #{component.name}'"
+
+issue = client.Issue.build
+
+issue.save(
+  {
+    'fields' => {
+      'summary' => 'Sample Ticket',
+      'project' => { 'key' => 'YPEDTO' },
+      'issuetype' => { 'name' => 'Story' }
+    }
+  }
+)
+
+puts issue.pretty_inspect
+
+issue.fetch
+
+puts "Created issue #{issue.key}"
