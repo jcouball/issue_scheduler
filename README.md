@@ -30,6 +30,8 @@ $
 
 ## Usage
 
+### Configuration
+
 Add config in the following format to ~/.issue_scheduler.yaml:
 
 ```text
@@ -59,6 +61,26 @@ description: |
 
   When you finish this task, you will feel a lot better!
 ```
+
+### Running the Scheduler
+
+Once configuration is finished, run the scheduyler with the following command:
+
+```shell
+$ issue-scheduler
+```
+
+Press CTRL-C to exit the scheduler.
+
+### Running the Admin UI
+
+Run the admin UI with the following command:
+
+```shell
+$ issue-scheduler-admin-ui
+```
+
+Press CTRL-C to exit the admin UI.
 
 ## Development
 
