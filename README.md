@@ -67,7 +67,7 @@ description: |
 Once configuration is finished, run the scheduyler with the following command:
 
 ```shell
-$ issue-scheduler
+issue-scheduler
 ```
 
 Press CTRL-C to exit the scheduler.
@@ -77,7 +77,7 @@ Press CTRL-C to exit the scheduler.
 Run the admin UI with the following command:
 
 ```shell
-$ issue-scheduler-admin-ui
+issue-scheduler-admin-ui
 ```
 
 Press CTRL-C to exit the admin UI.
@@ -96,4 +96,4 @@ commits and the created tag, and push the `.gem` file to
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jcouball/issue_scheduler.
+Bug reports and pull requests are welcome on GitHub at [jcouball/issue_scheduler](https://github.com/jcouball/issue_scheduler).
