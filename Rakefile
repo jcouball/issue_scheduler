@@ -5,7 +5,11 @@ require 'rake/clean'
 # The default task
 
 desc 'Run the same tasks that the CI build will run'
-task default: %w[spec rubocop yard yard:audit yard:coverage bundle:audit build]
+if RUBY_PLATFORM == 'java'
+  task default: %w[spec rubocop bundle:audit build]
+else
+  task default: %w[spec rubocop yard yard:audit yard:coverage bundle:audit build]
+end
 
 # RSpec
 
@@ -55,38 +59,40 @@ end
 
 CLEAN << 'rubocop-report.json'
 
-# YARD
+unless RUBY_PLATFORM == 'java'
+  # YARD
 
-require 'yard'
+  require 'yard'
 
-YARD::Rake::YardocTask.new do |t|
-  t.files = %w[lib/**/*.rb examples/**/*]
-  t.stats_options = ['--list-undoc']
-end
+  YARD::Rake::YardocTask.new do |t|
+    t.files = %w[lib/**/*.rb examples/**/*]
+    t.stats_options = ['--list-undoc']
+  end
 
-CLEAN << '.yardoc'
-CLEAN << 'doc'
+  CLEAN << '.yardoc'
+  CLEAN << 'doc'
 
-# Yardstick
+  # Yardstick
 
-desc 'Run yardstick to show missing YARD doc elements'
-task :'yard:audit' do
-  sh "yardstick 'lib/**/*.rb'"
-end
+  desc 'Run yardstick to show missing YARD doc elements'
+  task :'yard:audit' do
+    sh "yardstick 'lib/**/*.rb'"
+  end
 
-# Yardstick coverage
+  # Yardstick coverage
 
-require 'yardstick/rake/verify'
+  require 'yardstick/rake/verify'
 
-Yardstick::Rake::Verify.new(:'yard:coverage') do |verify|
-  verify.threshold = 100
-end
+  Yardstick::Rake::Verify.new(:'yard:coverage') do |verify|
+    verify.threshold = 100
+  end
 
-# Publish YARD documentation to GitHub
+  # Publish YARD documentation to GitHub
 
-require 'github_pages_rake_tasks'
+  require 'github_pages_rake_tasks'
 
-GithubPagesRakeTasks::PublishTask.new do |task|
-  # task.doc_dir = 'documentation'
-  task.verbose = true
+  GithubPagesRakeTasks::PublishTask.new do |task|
+    # task.doc_dir = 'documentation'
+    task.verbose = true
+  end
 end

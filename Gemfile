@@ -2,4 +2,8 @@
 
 source 'https://rubygems.org'
 
+git 'https://github.com/lsegal/yard', branch: 'main' do
+  gem 'yard'
+end
+
 gemspec
