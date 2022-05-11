@@ -13,12 +13,10 @@ module IssueScheduler
     #   CONFIG
     #   config = IssueScheduler::Config.new(config_yaml)
     #
-    # @param config_yaml [String] the config in YAML format
+    # @param config_hash [Hash] the config object as a hash
     #
-    def initialize(config_yaml)
-      config_from_yaml = parse_config(config_yaml)
-      assert_config_is_an_object(config_from_yaml)
-      @config = DEFAULT_VALUES.merge(config_from_yaml)
+    def initialize(config_hash)
+      @config = DEFAULT_VALUES.merge(config_hash)
       assert_no_unexpected_keys(config)
       assert_all_values_are_non_nil(config)
     end
@@ -118,6 +116,33 @@ module IssueScheduler
       config[:issue_templates]
     end
 
+    # Load the issue templates from the configured glob pattern(s) in issue_templates
+    #
+    # @example
+    #   config_yaml = <<~CONFIG
+    #     {
+    #       username: user, password: pass, site: https://jira.mydomain.com, auth_type: basic,
+    #       issue_templates: 'config/**/*.yaml'
+    #     }
+    #   CONFIG
+    #   config = IssueScheduler::Config.new(config_yaml)
+    #   config.load_issue_templates
+    #   IssueScheduler::IssueTemplate.size #=> number of issue templates loaded from config/**/*.yaml
+    #
+    # @return [void] as a side effect the issue templates are loaded
+    #
+    def load_issue_templates
+      Dir[*Array(issue_templates)].each do |file|
+        template_hash = { name: file, **IssueScheduler.load_yaml(file) }
+        template = IssueScheduler::IssueTemplate.new(template_hash)
+        if template.valid?
+          template.save
+        else
+          warn "Skipping invalid issue template #{file}: #{template.errors.full_messages.join(', ')}"
+        end
+      end
+    end
+
     # The config in the form of a Hash
     #
     # @example
@@ -164,15 +189,6 @@ module IssueScheduler
 
     private
 
-    # Raise a RuntimeError if the config is not a Hash
-    # @raise [RuntimeError] if the config is invalid
-    # @return [Void]
-    # @api private
-    def assert_config_is_an_object(config_hash)
-      raise "YAML config is not an object, contained '#{config_hash}'" unless
-        config_hash.is_a?(Hash)
-    end
-
     # Raise a RuntimeError if the config contains unexpected keys
     # @raise [RuntimeError] if the config is invalid
     # @return [Void]
@@ -193,16 +209,6 @@ module IssueScheduler
         keys_of_missing_values.empty?
     end
 
-    # Reads the config file returning a hash
-    # @raise [RuntimeError] if the config file can not be read or is not valid
-    # @return [Hash<String, String] the config hash read from config_yaml
-    # @api private
-    def parse_config(config_yaml)
-      YAML.safe_load(config_yaml, permitted_classes: [Symbol], aliases: true, symbolize_names: true)
-    rescue Psych::SyntaxError => e
-      raise "Error parsing YAML config: #{e.message}"
-    end
-
     # The config hash from config_yaml
     # @return [Hash] the config hash
     # @api private
@@ -221,7 +227,7 @@ module IssueScheduler
       site: nil,
       context_path: '',
       auth_type: 'basic',
-      issue_templates: '~/.issue_scheduler/issue_templates'
+      issue_templates: '~/.issue_scheduler/issue_templates/**/*.yaml'
     }.freeze
   end
 end
