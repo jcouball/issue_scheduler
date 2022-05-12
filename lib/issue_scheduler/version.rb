@@ -2,5 +2,5 @@
 
 module IssueScheduler
   # The version of the Issue Scheduler gem
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
 end
